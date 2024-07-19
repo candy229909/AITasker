@@ -1,5 +1,5 @@
 <template>
-    <div class="card" style="min-width: 18rem;">
+    <div class="card" style="min-width: 10rem;">
       <div class="position-relative">
         <img src="../assets/龍年賀卡.png" class="card-img-top" alt="Night city view">
         <!-- <button class="btn btn-light rounded-circle position-absolute top-50 start-50 translate-middle">
@@ -11,23 +11,19 @@
         </div>
       </div>
       <div class="card-body">
-        <h5 class="card-title">夢鏡影像工作室</h5>
-        <div class="d-flex align-items-center mb-2">
-          <div class="text-warning me-2">
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star"></i>
-          </div>
-          <span>4.0</span>
+      <h5 class="card-title">{{ expert.name }}</h5>
+      <div class="d-flex align-items-center mb-2">
+        <div class="text-warning me-2">
+          <i v-for="n in 5" :key="n" :class="['bi', n <= expert.rating ? 'bi-star-fill' : 'bi-star']"></i>
         </div>
-        <p class="card-text">Expert 影片/廣告拍攝</p>
-        <div class="d-flex justify-content-between">
-          <button class="btn btn-outline-secondary">Profile</button>
-          <button class="btn btn-warning">Ask</button>
-        </div>
+        <span>{{ expert.rating.toFixed(1) }}</span>
       </div>
+      <p class="card-text">{{ expert.expertise }}</p>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-outline-secondary">Profile</button>
+        <button class="btn btn-warning">Ask</button>
+      </div>
+    </div>
     </div>
   </template>
   
@@ -35,9 +31,16 @@
   import 'bootstrap-icons/font/bootstrap-icons.css'
   import 'bootstrap/dist/css/bootstrap.css'
   import 'bootstrap'
-  export default {
-    name: 'ExpertProfileCard'
+  import { defineComponent } from 'vue';
+  export default defineComponent({
+  name: 'Card',
+  props: {
+    expert: {
+      type: Object,
+      required: true
+    }
   }
+})
   </script>
   
   <style scoped>
