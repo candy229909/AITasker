@@ -8,10 +8,9 @@ Created on Fri Jul 19 20:14:38 2024
 from flask import Blueprint, request, jsonify, Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import  jwt_required
-from database import Case, Customer, CaseStatus
+from models import Case, Customer, CaseStatus
+from database import db
 
-app = Flask(__name__)
-db = SQLAlchemy(app)
 case_status = Blueprint('case_status', __name__)
 
 @case_status.route('/wait', methods=['GET'])

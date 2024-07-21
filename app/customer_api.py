@@ -10,18 +10,16 @@ Created on Fri Jul 19 19:44:05 2024
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import  jwt_required 
 from flask_sqlalchemy import SQLAlchemy
-from database import Customer, Login, Case, Merchant
+from models import Customer, Login, Case, Merchant
+from database import db
 from flask_jwt_extended import get_jwt_identity
 
 
 customer = Blueprint('customer', __name__)
 
-app = Flask(__name__)
-db = SQLAlchemy(app)
-
 # 新增帳號的路由
-@customer.route('/add_customer', methods=['POST'])
-def add_customer():
+@customer.route('/register', methods=['POST'])
+def register():
     name = request.json.get('name')
     email = request.json.get('email')
     username = request.json.get('username')
@@ -48,8 +46,8 @@ def add_to_cart(case_id):
     if not customer:
         return jsonify({'message': 'User not found'}), 404
 
-    task = Case.query.get(case_id)
-    if not task:
+    case = Case.query.get(case_id)
+    if not case:
         return jsonify({'message': 'Case not found'}), 404
 
     # 添加任務到用戶購物車

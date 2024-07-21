@@ -10,14 +10,12 @@ Created on Fri Jul 19 19:44:05 2024
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import  jwt_required 
 from flask_sqlalchemy import SQLAlchemy
-from database import Customer, Login, Case, Merchant, Tag
+from models import Customer, Login, Case, Merchant, Tag
+from database import db
 from flask_jwt_extended import get_jwt_identity
 
 
 merchant = Blueprint('merchant', __name__)
-
-app = Flask(__name__)
-db = SQLAlchemy(app)
 
 # 新增帳號的路由
 @merchant.route('/add_merchant', methods=['POST'])
