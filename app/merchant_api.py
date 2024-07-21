@@ -10,7 +10,7 @@ Created on Fri Jul 19 19:44:05 2024
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import  jwt_required 
 from flask_sqlalchemy import SQLAlchemy
-from database import Customer, Login, Case, Merchant
+from database import Customer, Login, Case, Merchant, Tag
 from flask_jwt_extended import get_jwt_identity
 
 
@@ -75,7 +75,14 @@ def get_merchant(merchant_id):
 
 @merchant.route('/merchants_sorted_experience', methods=['GET'])
 def merchants_sorted_experience():
-    merchants = Merchant.query.order_by(Merchant.case_experience.desc()).all()
+    tag_name = request.json.get('tag_name', "code", type=str)
+    page = request.json.get('page', 1, type=int)
+    query = Merchant.query.join(Merchant.tags)
+    query = query.filter(Tag.name == tag_name)
+    query = query.order_by(Merchant.case_experience.desc())
+
+    merchants = query.paginate(page, per_page=10, error_out=False)  # 每頁 10 個數據
+    
     merchants_list = []
     for merchant in merchants:
         merchants_list.append({
