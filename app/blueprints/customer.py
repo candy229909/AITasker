@@ -5,10 +5,9 @@ Created on Fri Jul 19 19:44:05 2024
 @author: g8920
 """
 
-from flask import Flask, Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify
 from flask_jwt_extended import  jwt_required 
-from flask_sqlalchemy import SQLAlchemy
-from models import Customer, Login, Case, Merchant
+from models import Customer, Login, Case
 from database import db
 from flask_jwt_extended import get_jwt_identity
 

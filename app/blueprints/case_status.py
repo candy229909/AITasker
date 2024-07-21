@@ -4,7 +4,6 @@ Created on Fri Jul 19 20:14:38 2024
 
 @author: g8920
 """
-# task_status
 from flask import Blueprint, request, jsonify, Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import  jwt_required

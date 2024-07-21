@@ -48,7 +48,6 @@ def case_experence_add():
     else:
         return jsonify({'message': 'Merchant not found'}), 404
     
-
 # 取得所有merchants的部分資料
 @merchant.route('/merchants', methods=['GET'])
 def get_merchants():
@@ -62,14 +61,29 @@ def get_merchants():
     return jsonify(merchants_list)
 
 # 取得單一merchant的詳細資料
-@merchant.route('/get_merchant/<int:merchant_id>', methods=['GET'])
-def get_merchant(merchant_id):
-    merchant = Case.query.get_or_404(merchant_id)
-    return jsonify({
+@merchant.route('/get_merchant_info/<int:merchant_id>', methods=['GET'])
+@jwt_required()
+def get_merchant_info(merchant_id):
+    merchant = Merchant.query.filter_by(id=merchant_id).first()
+    if not merchant:
+        return jsonify({'message': 'Merchant not found'}), 404
+    tag_name = request.json.get('tag_name', "code", type=str)
+    # 獲取該 merchant 關聯的 tags
+    tags = [tag.name for tag in merchant.tags]
+    if tag_name in tags:
+        tags.remove(tag_name)
+    # 组装返回數據
+    merchant_data = {
         'id': merchant.id,
         'name': merchant.name,
-    })
-
+        'email': merchant.email,
+        'case_experience': merchant.case_experience,
+        'temp_experience': merchant.temp_experience,
+        'created_at': merchant.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+        'tags': tags
+    }
+    
+    return jsonify(merchant_data), 200
 
 @merchant.route('/merchants_sorted_experience', methods=['GET'])
 def merchants_sorted_experience():
