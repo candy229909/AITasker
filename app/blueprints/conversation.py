@@ -9,15 +9,6 @@ from models import Customer, Conversation, Merchant
 from database import db
 
 chat = Blueprint('chat', __name__)
-# app = Flask(__name__)
-# db = SQLAlchemy(app)
-
-'''
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'  # 使用 SQLite 数据库，文件名为 app.db
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-'''
-
-
 
 # 獲取對話的路由
 @chat.route('/conversations', methods=['GET'])

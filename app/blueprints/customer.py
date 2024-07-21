@@ -5,8 +5,6 @@ Created on Fri Jul 19 19:44:05 2024
 @author: g8920
 """
 
-# user_api
-
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import  jwt_required 
 from flask_sqlalchemy import SQLAlchemy
