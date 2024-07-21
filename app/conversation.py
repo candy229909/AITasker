@@ -92,7 +92,7 @@ def get_conversations_by_case(case_id):
 @chat.route('/conversations/merchant/<int:merchant_id>', methods=['GET'])
 @jwt_required()
 def get_conversations_by_merchant(merchant_id):
-    conversations = Conversation.query.join(conversation_merchants).filter(conversation_merchants.c.merchant_id == merchant_id).all()
+    conversations = Conversation.query.join(Conversation.merchants).filter(Conversation.merchants.c.merchant_id == merchant_id).all()
     if not conversations:
         return jsonify({'message': 'No conversations found for this merchant'}), 404
     
