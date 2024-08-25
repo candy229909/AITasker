@@ -17,12 +17,19 @@ case_tags = db.Table('case_tags',
                      )
 
 merchant_tags = db.Table('merchant_tags',
-                     db.Column('cmerchant_id', db.Integer, db.ForeignKey('merchants.id')),
+                     db.Column('merchant_id', db.Integer, db.ForeignKey('merchants.id')),
                      db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'))
                      )
 
+merchant_cases = db.Table('merchant_cases',
+                     db.Column('merchant_id', db.Integer, db.ForeignKey('merchants.id')),
+                     db.Column('case_id', db.Integer, db.ForeignKey('cases.id'))
+                     )
+
 conversation_merchants = db.Table('conversation_merchants',
-                                  db.Column('conversation_id', db.Integer, db.ForeignKey('conversations.id')),
+                                  db.Column('conversation_id', 
+                                            db.Integer, 
+                                            db.ForeignKey('conversations.id')),
                                   db.Column('merchant_id', db.Integer, db.ForeignKey('merchants.id'))
                                   )
 
@@ -48,10 +55,10 @@ class Merchant(db.Model):
     temp_experience = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    cases = db.relationship('Case', back_populates='merchant')
+    cases = db.relationship('Case', secondary=merchant_cases, back_populates='merchant')
     conversations = db.relationship('Conversation', secondary=conversation_merchants, back_populates='merchants')
     tags = db.relationship('Tag', secondary=merchant_tags, back_populates='merchants')
-    
+     
 # 定義標籤模型
 class Tag(db.Model):
     __tablename__ = 'tags'
@@ -59,7 +66,7 @@ class Tag(db.Model):
     name = db.Column(db.String, unique=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    cases = db.relationship('Case', secondary=case_tags, back_populates='tags')
+    cases = db.relationship('Case', secondary=case_tags, backref='tags')
 
 # 定義案件模型
 class Case(db.Model):

@@ -131,7 +131,7 @@ def delete_case(case_id):
     case = Customer.query.get(case_id)
     if not case:
         return jsonify({'message': 'Case not found'}), 404
-    db.session.delete(case)
+    db.session.remove(case)
     db.session.commit()
     return jsonify({'message': 'Case deleted successfully'}), 200
 
