@@ -36,7 +36,7 @@ def register():
 
 # 將任務加進購物車
 @customer.route('/add_to_cart/<case_id>', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def add_to_cart(case_id):
     current_user = get_jwt_identity()  # 獲取當前用戶的 ID
     customer = Customer.query.filter_by(id=current_user).first()

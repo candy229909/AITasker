@@ -24,7 +24,7 @@ def cases_sorted_new():
         query = query.filter(Case.status == status)
     query = query.order_by(Case.created_at.desc())
     
-    cases = query.paginate(page, per_page=10, error_out=False)  # 每頁 10 個數據
+    cases = query.paginate(page=page, per_page=10, error_out=False)  # 每頁 10 個數據
     case_list = []
     for case in cases.items:
         case_list.append({
@@ -54,8 +54,7 @@ def cases_sorted_high_price():
     if status:
         query = query.filter(Case.status == status)
     query = query.order_by(Case.price.desc())
-    
-    cases = query.paginate(page, per_page=10, error_out=False)  # 每頁 10 個數據
+    cases = query.paginate(page=page, per_page=10, error_out=False)  # 每頁 10 個數據
     cases_list = []
     for case in cases:
         cases_list.append({
@@ -75,14 +74,14 @@ def cases_sorted_high_price():
 @case.route('/cases_sorted_low_price', methods=['GET'])
 def cases_sorted_low_price():
     page = request.args.get('page', 1, type=int) # 默認頁碼為 1
-    tag_name = request.json.get('tag_name', "code", type=str)
+    tag_name = request.args.get('tag_name', "code", type=str)
     status = request.args.get('status', 'find', type=str)
     
     query = Case.query.join(Case.tags).filter(Tag.name == tag_name)
     if status:
         query = query.filter(Case.status == status)    
     query = query.order_by(Case.price.asc())
-    cases = query.paginate(page, per_page=10, error_out=False)  # 每頁 10 個數據
+    cases = query.paginate(page=page, per_page=10, error_out=False)  # 每頁 10 個數據
 
     cases_list = []
     for case in cases:

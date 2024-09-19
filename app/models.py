@@ -66,8 +66,10 @@ class Tag(db.Model):
     name = db.Column(db.String, unique=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
-    cases = db.relationship('Case', secondary=case_tags, backref='tags')
-
+    # cases = db.relationship('Case', secondary=case_tags, backref='tags')
+    cases = db.relationship('Case', secondary=case_tags, back_populates='tags')
+    merchants = db.relationship('Merchant', secondary=merchant_tags, back_populates='tags')
+    
 # 定義案件模型
 class Case(db.Model):
     __tablename__ = 'cases'
@@ -84,8 +86,8 @@ class Case(db.Model):
     customer = db.relationship('Customer', back_populates='cases')
     merchant = db.relationship('Merchant', back_populates='cases', foreign_keys=[merchant_id])
     contractor = db.relationship('Merchant', foreign_keys=[contractor_id])
+    # tags = db.relationship('Tag', secondary=case_tags, back_populates='cases')
     tags = db.relationship('Tag', secondary=case_tags, back_populates='cases')
-
 # 定義對話模型
 class Conversation(db.Model):
     __tablename__ = 'conversations'
