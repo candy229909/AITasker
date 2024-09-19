@@ -49,7 +49,7 @@ def case_experence_add():
         return jsonify({'message': 'Merchant not found'}), 404
     
 # 取得所有merchants的部分資料
-@merchant.route('/merchants', methods=['GET'])
+@merchant.route(' ', methods=['GET'])
 def get_merchants():
     merchants = Merchant.query.all()
     merchants_list = []
@@ -62,12 +62,12 @@ def get_merchants():
 
 # 取得單一merchant的詳細資料
 @merchant.route('/get_merchant_info/<int:merchant_id>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def get_merchant_info(merchant_id):
     merchant = Merchant.query.filter_by(id=merchant_id).first()
     if not merchant:
         return jsonify({'message': 'Merchant not found'}), 404
-    tag_name = request.json.get('tag_name', "code", type=str)
+    tag_name = request.args.get('tag_name', "code", type=str)
     # 獲取該 merchant 關聯的 tags
     tags = [tag.name for tag in merchant.tags]
     if tag_name in tags:
@@ -87,13 +87,13 @@ def get_merchant_info(merchant_id):
 
 @merchant.route('/merchants_sorted_experience', methods=['GET'])
 def merchants_sorted_experience():
-    tag_name = request.json.get('tag_name', "code", type=str)
-    page = request.json.get('page', 1, type=int)
+    tag_name = request.args.get('tag_name', "code", type=str)
+    page = request.args.get('page', 1, type=int)
     query = Merchant.query.join(Merchant.tags)
     query = query.filter(Tag.name == tag_name)
     query = query.order_by(Merchant.case_experience.desc())
 
-    merchants = query.paginate(page, per_page=10, error_out=False)  # 每頁 10 個數據
+    merchants = query.paginate(page=page, per_page=10, error_out=False)  # 每頁 10 個數據
     
     merchants_list = []
     for merchant in merchants:

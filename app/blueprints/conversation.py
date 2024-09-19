@@ -8,7 +8,7 @@ chat = Blueprint('chat', __name__)
 
 # 獲取對話的路由
 @chat.route('/conversations', methods=['GET'])
-@jwt_required()
+#@jwt_required()
 def get_conversations():
     user_id = get_jwt_identity()
     customer = Customer.query.get(user_id)
@@ -32,7 +32,7 @@ def get_conversations():
 
 # 新增對話的路由
 @chat.route('/conversations', methods=['POST'])
-@jwt_required()
+#@jwt_required()
 def create_conversation():
     user_id = get_jwt_identity()
     customer = Customer.query.get(user_id)
@@ -61,7 +61,7 @@ def create_conversation():
 
 # 通過案件查詢對話紀錄的路由
 @chat.route('/conversations/case/<int:case_id>', methods=['GET'])
-@jwt_required()
+#@jwt_required()
 def get_conversations_by_case(case_id):
     conversations = Conversation.query.filter_by(case_id=case_id).all()
     if not conversations:
@@ -83,7 +83,7 @@ def get_conversations_by_case(case_id):
 
 # 通過商家查詢對話紀錄的路由
 @chat.route('/conversations/merchant/<int:merchant_id>', methods=['GET'])
-@jwt_required()
+#@jwt_required()
 def get_conversations_by_merchant(merchant_id):
     conversations = Conversation.query.join(Conversation.merchants).filter(Conversation.merchants.c.merchant_id == merchant_id).all()
     if not conversations:
@@ -106,7 +106,7 @@ def get_conversations_by_merchant(merchant_id):
 
 # 通過顧客查詢對話紀錄的路由
 @chat.route('/conversations/customer/<int:customer_id>', methods=['GET'])
-@jwt_required()
+#@jwt_required()
 def get_conversations_by_customer(customer_id):
     conversations = Conversation.query.filter_by(customer_id=customer_id).all()
     if not conversations:
